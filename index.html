@@ -8,15 +8,43 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script type="text/babel">
         function App() {
-            const [counter, setCounter] = React.useState(0);
-            const onClick = () => {
-               // setCounter(counter + 1);
-               setCounter((current) => current + 1);
-            };
+            const [amount, setAmount] = React.useState();
+            const [Flipped, setFlipped] = React.useState(false);
+            const onchange = (event) => {
+                setAmount(event.target.value);
+            }
+            const reset = () => setAmount(0);
+            function onFlip () {
+                reset();
+                setFlipped((current) => !current);
+            }
             return (
+                <div>  
+                <h1>Super Converter</h1>
                 <div>
-                    <h3>Total click:{counter}</h3>
-                    <button onClick={onClick}>Click me</button>
+                    <label for="minutes" >Minutes</label>
+                    <input 
+                        value={Flipped ? amount*60 : amount} 
+                        id ="minutes" 
+                        placeholder="Minutes" 
+                        type="number"
+                        onChange={onchange}
+                        disabled={Flipped}
+                    />
+                </div>
+                <div>
+                    <label for="hours" >Hours</label>
+                    <input 
+                        value={Flipped ? amount : Math.round(amount / 60)}
+                        id="hours" 
+                        placeholder="Hours" 
+                        type="number"
+                        disabled={!Flipped}
+                        onChange={onchange}
+                    />
+                </div>
+                <button onClick={reset}>Reset</button>
+                <button onClick={onFlip}>Flip</button>
                 </div>
             );
         }
